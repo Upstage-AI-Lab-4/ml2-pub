@@ -1,0 +1,15 @@
+artifact_uri: mlflow-artifacts:/790932059215726165/6d151b0a5fc740e18c0af5a8ba874ebc/artifacts
+end_time: 1727345847951
+entry_point_name: ''
+experiment_id: '790932059215726165'
+lifecycle_stage: active
+run_id: 6d151b0a5fc740e18c0af5a8ba874ebc
+run_name: funny-worm-574
+run_uuid: 6d151b0a5fc740e18c0af5a8ba874ebc
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1727345782174
+status: 3
+tags: []
+user_id: deptno

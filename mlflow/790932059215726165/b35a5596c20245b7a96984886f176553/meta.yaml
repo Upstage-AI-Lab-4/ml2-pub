@@ -1,0 +1,15 @@
+artifact_uri: mlflow-artifacts:/790932059215726165/b35a5596c20245b7a96984886f176553/artifacts
+end_time: 1727344957768
+entry_point_name: ''
+experiment_id: '790932059215726165'
+lifecycle_stage: active
+run_id: b35a5596c20245b7a96984886f176553
+run_name: bald-mouse-314
+run_uuid: b35a5596c20245b7a96984886f176553
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1727344892862
+status: 3
+tags: []
+user_id: deptno
