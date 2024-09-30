@@ -8,6 +8,7 @@ services:
     command: ["mlflow" , "ui" , "--host" , "0.0.0.0"]
   airflow-web-server:
     image: "apache/airflow:2.10.2-python3.10"
+    user: "0:0"
     ports:
       - "5002:8080"
     volumes:
@@ -15,6 +16,7 @@ services:
     command: ["airflow", "webserver"]
   airflow-scheduler:
     image: "apache/airflow:2.10.2-python3.10"
+    user: "0:0"
     volumes:
       - "./airflow:/opt/airflow"
     depends_on:
