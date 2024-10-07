@@ -22,3 +22,10 @@ services:
     depends_on:
       - "airflow-web-server"
     command: ["airflow", "scheduler"]
+  api:
+    build:
+      context: "."
+      dockerfile: "Dockerfile.mlops_api"
+    image: "mlops_api:latest"
+    ports:
+      - "8000:8000"
