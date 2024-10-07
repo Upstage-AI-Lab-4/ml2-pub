@@ -1,0 +1,15 @@
+artifact_uri: mlflow-artifacts:/790932059215726165/99703c3ab91048eb94b2d35ef5acbc6b/artifacts
+end_time: 1728302000738
+entry_point_name: ''
+experiment_id: '790932059215726165'
+lifecycle_stage: active
+run_id: 99703c3ab91048eb94b2d35ef5acbc6b
+run_name: adventurous-bass-874
+run_uuid: 99703c3ab91048eb94b2d35ef5acbc6b
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1728301825029
+status: 3
+tags: []
+user_id: sebi
