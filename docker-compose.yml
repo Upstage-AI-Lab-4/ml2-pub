@@ -5,6 +5,7 @@ services:
       - "5001:5000"
     volumes:
       - "./mlflow:/mlruns"
+      - "./mlartifacts:/mlartifacts"
     command: ["mlflow" , "ui" , "--host" , "0.0.0.0"]
   airflow-web-server:
     image: "apache/airflow:2.10.2-python3.10"
