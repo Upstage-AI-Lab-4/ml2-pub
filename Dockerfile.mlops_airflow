@@ -6,4 +6,4 @@ RUN apt-get update && apt-get install -y libgomp1
 
 USER airflow
 
-run pip install mlflow implicit
+run pip install mlflow implicit requests

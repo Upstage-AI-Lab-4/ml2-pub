@@ -31,5 +31,7 @@ services:
       context: "."
       dockerfile: "Dockerfile.mlops_api"
     image: "mlops_api:latest"
+    volumes:
+      - "./mlartifacts:/mlartifacts"
     ports:
       - "8000:8000"
