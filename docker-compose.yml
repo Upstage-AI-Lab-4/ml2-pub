@@ -20,9 +20,9 @@ services:
       context: "."
       dockerfile: "Dockerfile.mlops_airflow"
     image: "mlops_airflow:latest"
-    user: "airflow"
     volumes:
       - "./airflow:/opt/airflow"
+      - "./src/datasets:/opt/airflow/datasets"
     depends_on:
       - "airflow-web-server"
     command: ["airflow", "scheduler"]

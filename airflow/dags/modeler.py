@@ -17,8 +17,8 @@ from scipy.sparse import csr_matrix
 
 def handler():
     print('load data')
-    movie_path = 'src/datasets/movies_metadata.csv'
-    rating_path = 'src/datasets/ratings_small.csv'
+    movie_path = './datasets/movies_metadata.csv'
+    rating_path = './datasets/ratings_small.csv'
     movie_dt = pd.read_csv(movie_path)
     rating_dt = pd.read_csv(rating_path)
 
@@ -48,7 +48,7 @@ def handler():
     dataset_name = '2099-12-31'
     experiment_name = f'ALS_{dataset_name}'
 
-    mlflow.set_tracking_uri('http://mlflow:5001')
+    mlflow.set_tracking_uri('http://mlflow:5000')
     mlflow.set_experiment(experiment_name=experiment_name )
 #- mlflow 설정
 
