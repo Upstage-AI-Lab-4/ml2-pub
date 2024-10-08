@@ -3,14 +3,12 @@ from airflow.operators.dummy_operator import DummyOperator
 from airflow.operators.python_operator import PythonOperator
 from datetime import datetime
 
-import mlflow.sklearn
 import pandas as pd
 import numpy as np
-import pickle
 import ast
 import warnings; warnings.filterwarnings('ignore')
+import tag
 
-from io import BytesIO
 from sklearn.metrics.pairwise import cosine_similarity 
 from implicit.als import AlternatingLeastSquares
 from scipy.sparse import csr_matrix
@@ -42,32 +40,23 @@ def handler():
     print('create ALS model')
     model = AlternatingLeastSquares(factors=10, regularization=0.1, iterations=20)
     model.fit(user_item_matrix)
-
-#+ mlflow 설정
+    
+# mlflow 설정
     print('configure mlflow')
     dataset_name = '2099-12-31'
     experiment_name = f'ALS_{dataset_name}'
-
-    mlflow.set_tracking_uri('http://mlflow:5000')
-    mlflow.set_experiment(experiment_name=experiment_name )
-#- mlflow 설정
-
+    tag.set_experiment(experiment_name)
 
     print('log to mlflow')
-    with mlflow.start_run(run_name=experiment_name, nested=True) as run:
-        class ALSWrapper(mlflow.pyfunc.PythonModel):
-            def load_context(self, context):
-                self.model = model  # 모델 로드
+    with tag.run(experiment_name) as run:
+        tag.log_model(experiment_name, python_model=tag.ALSWrapper(model))
 
-            def predict(self, context, model_input):
-                # 예시 예측 (사용자 정의 예측 로직 적용)
-                return self.model.recommend(model_input)
+        print(f'register model, run: {run.info.run_id}')
+        model_name = 'movie ALS'
+        model_version = tag.model_register(model_name, run.info.run_id)
 
-        mlflow.pyfunc.log_model(
-            f'{experiment_name}',
-            python_model=ALSWrapper()
-        )
-
+        print(f'give model a version, model_version: {model_version.version}')
+        tag.promote_to_production(model_name, model_version.version)
 
 
 # Define the DAG
