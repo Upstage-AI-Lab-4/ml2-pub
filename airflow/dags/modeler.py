@@ -3,6 +3,7 @@ from airflow.operators.dummy_operator import DummyOperator
 from airflow.operators.python_operator import PythonOperator
 from datetime import datetime
 
+import requests
 import pandas as pd
 import numpy as np
 import ast
@@ -54,9 +55,39 @@ def handler():
         print(f'register model, run: {run.info.run_id}')
         model_name = 'movie ALS'
         model_version = tag.model_register(model_name, run.info.run_id)
+        print(f'model version: {model_version}')
 
         print(f'give model a version, model_version: {model_version.version}')
         tag.promote_to_production(model_name, model_version.version)
+
+        ret = dict(model_version)
+        ret['experiment_name'] = experiment_name
+        return ret
+
+
+def notify_to_api_server(ti, **kwargs):
+    prev_task_data = ti.xcom_pull(task_ids='modeling_task')
+    print('prev_task_data')
+    print(prev_task_data)
+
+    name = prev_task_data['name']
+    version = prev_task_data['version']
+    experiment_name = prev_task_data['experiment_name']
+
+    url = f'http://api:8000/experiment/{experiment_name}/version'
+
+    data = {
+        'model': name,
+        'version': version,
+        'source': prev_task_data['source'],
+    }
+    
+    print(f'request url: {url}')
+    response = requests.post(url, json=data)
+
+    print(response.json())
+
+
 
 
 # Define the DAG
@@ -66,6 +97,14 @@ with DAG('modeler',
           start_date=datetime(2024, 10, 7), 
           catchup=False) as dag:
 
-    task = PythonOperator(task_id='modeling_task',
+    task1 = PythonOperator(task_id='modeling_task',
                         python_callable=handler,
                         dag=dag)
+
+
+    task2 = PythonOperator(task_id='notify_to_api_server',
+                        python_callable=notify_to_api_server,
+                        dag=dag)
+
+
+task1 >> task2
