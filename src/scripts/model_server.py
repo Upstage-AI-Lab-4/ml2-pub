@@ -91,7 +91,6 @@ movie_dt['release_year'] = movie_dt['release_year'].fillna(0).astype(int)
 def build_user_profile(user_id, rating_dt, movie_dt):
     # 사용자가 평점을 준 영화 정보 가져오기
     user_ratings = rating_dt[rating_dt['userId'] == user_id]
-    print(f'UNIQUE:{user_ratings["tmdbId"].unique()}, type:{user_ratings["tmdbId"].dtype}')
     print(movie_dt['id'].dtype)
     # 'tmdbId'와 'id'를 매핑하여 사용자의 영화 정보를 가져오기
     user_movies = movie_dt[movie_dt['id'].isin(user_ratings['tmdbId'].astype(int))].copy()
