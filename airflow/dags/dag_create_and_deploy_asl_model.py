@@ -14,6 +14,11 @@ import get_latest_dataset
 def create_model():
     (movie_dt, rating_dt) = get_latest_dataset.handler()
     movie_dt = preprocess_movie_dt.handler(movie_dt)
+
+    # 'id' 열을 정수형으로 변환
+    movie_dt['id'] = movie_dt['id'].astype(int)
+    rating_dt['tmdbId'] = rating_dt['tmdbId'].astype(int)
+
     wrapped_model = asl.handler(movie_dt, rating_dt)
     
     # mlflow 설정: 추가 모델 설정시 아래 변수들에 대한 동적 설정 혹은 dag 분리
