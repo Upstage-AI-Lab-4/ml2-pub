@@ -79,7 +79,7 @@ for item in movie_list:
                     links.append(icon_root_path + i['logo_path'])
             icon_link_arr.append(links)
         else:
-            icon_link_arr.append([])
+            icon_link_arr.append([ott_none_path])
 
     else:
         poster_path_arr.append(image_none_path)
@@ -96,7 +96,7 @@ for item in movie_list:
                     links.append(icon_root_path + i['logo_path'])
             icon_link_arr.append(links)
         else:
-            icon_link_arr.append([])
+            icon_link_arr.append([ott_none_path])
 
 
 
@@ -134,7 +134,7 @@ for item in movie_list_cb:
                     links.append(icon_root_path + i['logo_path'])
             icon_link_arr_cb.append(links)
         else:
-            icon_link_arr_cb.append([])
+            icon_link_arr_cb.append([ott_none_path])
 
     else:
         poster_path_arr_cb.append(image_none_path)
@@ -151,7 +151,7 @@ for item in movie_list_cb:
                     links.append(icon_root_path + i['logo_path'])
             icon_link_arr_cb.append(links)
         else:
-            icon_link_arr_cb.append([])
+            icon_link_arr_cb.append([ott_none_path])
 
 
 

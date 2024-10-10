@@ -247,7 +247,7 @@ def get_movielist_for_coldstart():
     first_list_movies = result_list['id'].astype(str).to_list()
     return first_list_movies
 
-new_user_vector = []
+
 
 def set_first_ratings(movie_id, ratings):
     new_user_ratings = {    
@@ -340,10 +340,11 @@ def recommend_movie_by_als(user_id, n_movies=10, new_user_vector=None):
             print(f"- {movie_title[0]}: {row['rating']}점")
         else:
             print(f"- tmdbId {row['tmdbId']}에 해당하는 영화 제목을 찾을 수 없습니다.")
-
+    
     # ALS 모델을 사용하여 추천 영화 목록 생성
     print(f"\nUser {user_id}에게 추천하는 영화 {n_movies}개:")
     if 'new_user_vector' in globals():
+        print("신규유저..")
         # new_user_vector를 CSR 형식으로 변환
         new_user_vector_csr = csr_matrix(new_user_vector)
 
@@ -355,7 +356,24 @@ def recommend_movie_by_als(user_id, n_movies=10, new_user_vector=None):
             recalculate_user=True
         )
     else:
-        recommendations = model.recommend(user_id, user_item_matrix[user_id], N=n_movies)
+        print("기존유저...왜안될까..")
+        existing_movie_ids = user_item_matrix.shape[1]
+        user_vector = np.zeros(existing_movie_ids)
+            # 신규 유저의 평점을 벡터에 채워넣기
+        for _, row in user_ratings.iterrows():
+            movie_index = int(row['tmdbId'])  # 영화 ID
+            user_vector[movie_index] = row['rating']  # 평점 입력
+
+        user_vector_csr = csr_matrix(user_vector)
+
+        # 변환된 CSR 형식을 사용하여 추천 생성, recalculate_user=True 사용
+        recommendations = model.recommend(
+            userid=user_id,
+            user_items=user_vector_csr,
+            N=n_movies,
+            recalculate_user=True
+        )
+        #recommendations = model.recommend(user_id, user_vector_csr, N=n_movies)
         
 
     # 추천된 영화 ID 목록 추출
