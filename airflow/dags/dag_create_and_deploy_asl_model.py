@@ -23,8 +23,8 @@ def create_model():
     return log_to_mlflow.handler(wrapped_model, experiment_name, model_name)
 
 # Define the DAG
-with DAG('create_and_deploy_new_model',
-          description='create model and deploy', 
+with DAG('create_and_deploy_asl_model',
+          description='create asl model and deploy', 
           schedule_interval='0 0 * * *', 
           start_date=datetime(2024, 10, 7), 
           catchup=False) as dag:
