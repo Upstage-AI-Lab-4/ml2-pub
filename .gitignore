@@ -1,3 +1,7 @@
 airflow/logs/**/*
 airflow/airflow-webserver.pid
 dataset/
+__pycache__
+mlflow
+mlartifacts
+datasets
