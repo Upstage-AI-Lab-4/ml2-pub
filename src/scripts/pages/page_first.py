@@ -1,15 +1,27 @@
 import streamlit as st
 import pandas as pd
-import api
 from streamlit_extras.row import row
 import requests
 
 st.set_page_config(
     layout='wide'
 )
-movie_data = pd.read_csv('../datasets/movies_metadata.csv')
-icon_thumb_up = '../resources/icons/thumb_up.png'
-icon_thumb_down = '../resources/icons/thumb_down.png'
+movie_data = pd.read_csv('../datasets/movie.csv')
+#movie_data = pd.read_csv('../datasets/movies_metadata.csv')
+#icon_thumb_up = '../resources/icons/thumb_up.png'
+#icon_thumb_down = '../resources/icons/thumb_down.png'
+
+
+
+####################
+headers = {
+    "accept": "application/json",
+    "Authorization": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJiMmY1N2RmMjUzZjIyZTAwMTQ5MjRjYjdhYmI1MWIxOSIsIm5iZiI6MTcyODU0MjA3Ny44MjExMzYsInN1YiI6IjY3MDFmZTM4Zjg3OGFkZmVkMDg1ODRlMyIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.zYZ0rkENIV78YzfmmcC71b49Svd5EXlokyHFF1sKCqI"
+}
+####################
+
+
+
 
 resp = requests.get(f'http://127.0.0.1:8080/user/currentId/')
 data = resp.json()
@@ -23,42 +35,62 @@ movie_list_resp = requests.get(f'http://127.0.0.1:8080/list/movie/firstlist/')
 movie_list = movie_list_resp.json()['movie_list']
 base_poster_path = 'https://image.tmdb.org/t/p/original'
 poster_path_arr = []
+movie_name_arr = []
+image_none_path = '../resources/no_poster.png'
 
 for item in movie_list:
-    str = movie_data.loc[int(item)]['poster_path']
-    poster_path_arr.append(base_poster_path + str)
-    print(movie_data.loc[int(item)]['title'])
-    print(base_poster_path + str)
+    if len(movie_data.loc[movie_data['id']==int(item)]) > 0:
+        poster_path_data = movie_data.loc[movie_data['id']==int(item), 'poster_path']
+        poster_str = poster_path_data.values[0]
+        if type(poster_str) is not str:
+            poster_path_arr.append(image_none_path)
+            movie_name_arr.append(movie_data.loc[movie_data['id']==int(item), 'title'])
+            
+        else:
+            poster_path_arr.append(base_poster_path + poster_str)
+            movie_name_arr.append(movie_data.loc[movie_data['id']==int(item), 'title'])
 
-ratings = ['4','2','2','2','5','3','4','1','2','2']
+    else:
+        poster_path_arr.append(image_none_path)
+        movie_name_arr.append(movie_data.loc[movie_data['id']==int(item), 'title'])
+
+
+
+
+
+#if 'selected_option' not in st.session_state:
+#    st.session_state.selected_option = '❌'
+#
+#selected_option = st.radio("Choose an option:", ['👍', '❌', '👎'], index=['👍', '❌', '👎'].index(st.session_state.selected_option))
+#st.session_state.selected_option = selected_option
 
 rad = []
-
 row1 = row(5,vertical_align='center')
-row1.image(poster_path_arr[0],width=180)
-row1.image(poster_path_arr[1],width=180)
-row1.image(poster_path_arr[2],width=180)
-row1.image(poster_path_arr[3],width=180)
-row1.image(poster_path_arr[4],width=180)
-row2 = row(5,vertical_align='center')
-rad.append(row2.radio('movie01', options=['👍', '❌', '👎'], horizontal = True, key='radio01', label_visibility='hidden'))
-rad.append(row2.radio('movie01', options=['👍', '❌', '👎'], horizontal = True, key='radio02', label_visibility='hidden'))
-rad.append(row2.radio('movie01', options=['👍', '❌', '👎'], horizontal = True, key='radio03', label_visibility='hidden'))
-rad.append(row2.radio('movie01', options=['👍', '❌', '👎'], horizontal = True, key='radio04', label_visibility='hidden'))
-rad.append(row2.radio('movie01', options=['👍', '❌', '👎'], horizontal = True, key='radio05', label_visibility='hidden'))
+for i in range(0,5):
+    row1.image(poster_path_arr[i],width=180)
+row1_title = row(5,vertical_align='center')
+for i in range(0,5):
+    row1_title.write(movie_name_arr[i].values[0])
 
-row3 = row(5,vertical_align='center')
-row3.image(poster_path_arr[5],width=180)
-row3.image(poster_path_arr[6],width=180)
-row3.image(poster_path_arr[7],width=180)
-row3.image(poster_path_arr[8],width=180)
-row3.image(poster_path_arr[9],width=180)
-row4 = row(5,vertical_align='center')
-rad.append(row4.radio('movie01', options=['👍', '❌', '👎'], horizontal = True, key='radio11', label_visibility='hidden'))
-rad.append(row4.radio('movie01', options=['👍', '❌', '👎'], horizontal = True, key='radio12', label_visibility='hidden'))
-rad.append(row4.radio('movie01', options=['👍', '❌', '👎'], horizontal = True, key='radio13', label_visibility='hidden'))
-rad.append(row4.radio('movie01', options=['👍', '❌', '👎'], horizontal = True, key='radio14', label_visibility='hidden'))
-rad.append(row4.radio('movie01', options=['👍', '❌', '👎'], horizontal = True, key='radio15', label_visibility='hidden'))
+
+row1_rate = row(5,vertical_align='center')
+for i in range(0,5):
+    rad.append(row1_rate.radio('movie01', options=['👍', '❌', '👎'], horizontal = True, key='radio'+str(i), label_visibility='hidden'))
+
+
+
+row2 = row(5,vertical_align='center')
+for i in range(5,10):
+    row2.image(poster_path_arr[i],width=180)
+row2_title = row(5,vertical_align='center')
+for i in range(5,10):
+    row2_title.write(movie_name_arr[i].values[0])
+
+
+row2_rate = row(5,vertical_align='center')
+for i in range(5,10):
+    rad.append(row2_rate.radio('movie01', options=['👍', '❌', '👎'], horizontal = True, key='radio'+str(i), label_visibility='hidden'))
+
 
 
 

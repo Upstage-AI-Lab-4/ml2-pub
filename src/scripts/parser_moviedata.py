@@ -19,7 +19,7 @@ if not os.path.exists(file_path):
 
 movie_df = pd.read_csv(file_path)
 
-year_range = range(2020, 2025)
+year_range = range(2006, 2020)
 month_range = range(1, 13)
 
 headers = {
@@ -52,5 +52,6 @@ for year in year_range:
                 movie_array.append(json_item)
             page = page+1
 
-movie_df = pd.DataFrame(movie_array)
-movie_df.to_csv(file_path)
+    movie_df = pd.DataFrame(movie_array)
+    movie_df.to_csv(file_path)
+    print(f'Complete Year {year}')
