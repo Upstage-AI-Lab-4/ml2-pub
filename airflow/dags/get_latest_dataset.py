@@ -10,6 +10,7 @@ def handler():
     movie_dt = pd.read_csv(movie_path)
     print(f'load rating data: {rating_path}')
     rating_dt = pd.read_csv(rating_path)
+    print(f'loaded')
 
     return (movie_dt, rating_dt)
 

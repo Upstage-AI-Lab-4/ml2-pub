@@ -1,7 +1,7 @@
 from airflow import DAG
 from airflow.operators.dummy_operator import DummyOperator
 from airflow.operators.python_operator import PythonOperator
-from datetime import datetime
+from datetime import datetime, timedelta
 
 import warnings; warnings.filterwarnings('ignore')
 import asl
@@ -35,6 +35,7 @@ with DAG('create_and_deploy_asl_model',
           description='create asl model and deploy', 
           schedule_interval='0 0 * * *', 
           start_date=datetime(2024, 10, 7), 
+          dagrun_timeout=timedelta(hours=2),
           catchup=False) as dag:
 
     task1 = PythonOperator(task_id='modeling_task',
