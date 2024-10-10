@@ -13,6 +13,7 @@ def create_model():
     
 # mlflow 설정
     print('configure mlflow')
+    # TODO: 아래 변수들에 대한 동적 설정 혹은 dag 분리
     dataset_name = '2099-12-31'
     experiment_name = f'ALS_{dataset_name}'
     model_name = 'movie ALS'
