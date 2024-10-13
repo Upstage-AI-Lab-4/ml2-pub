@@ -1,4 +1,4 @@
-![image](https://github.com/user-attachments/assets/cea52ff7-99bc-46c4-9ea1-844b795a3e1f)# 영화 추천 Service (Movie Recommend Service)
+# 영화 추천 Service (Movie Recommend Service)
 ## Team
 
 | <img src="https://avatars.githubusercontent.com/u/97029997?v=4" width="160" height="160"/> | <img src="https://avatars.githubusercontent.com/u/177704202?v=4" width="160" height="160"/> | <img src="https://avatars.githubusercontent.com/u/175805693?v=4" width="160" height="160"/> | <img src="https://avatars.githubusercontent.com/u/1223020?v=4" width="160" height="160"/> | <img src="https://avatars.githubusercontent.com/u/111125866?v=4" width="160" height="160"/> |
